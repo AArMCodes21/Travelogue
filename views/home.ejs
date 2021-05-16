@@ -63,8 +63,8 @@
             <a class="nav-link active" href="#" tabindex="-1" aria-disabled="false">login</a>
           </li>
         </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search Cities" aria-label="Search" id="search_input">
+        <form method="post" class="d-flex" action="/">
+          <input class="form-control me-2" type="input" placeholder="Search Cities" aria-label="Search" id="search_input" name="search_in">
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
       </div>
@@ -236,19 +236,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 <script src="index.js" type="text/javascript" charset="utf-8"></script>
-<script>
-function initMap() {
-
-  var input = document.getElementById('search_input');
-  var autocomplete = new google.maps.places.Autocomplete(input);
-}
-
-</script>
 
 
-<script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhB4N-Oll-xLRdUuiJoWRQROb_bH1CzO0&libraries=places&callback=initMap">
-</script>
 
 
   </body>
