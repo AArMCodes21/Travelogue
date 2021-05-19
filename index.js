@@ -13,7 +13,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://"+process.env.MONGOD_USER+":"+process.env.MONGOD+"@cluster0.uo37s.mongodb.net/Travelogue?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://aarm_user:travelogue@mongoDB@cluster0.uo37s.mongodb.net/Travelogue?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.on('connected', () =>{
   console.log("Mongose is connected!!!!");
 });
@@ -52,7 +52,7 @@ app.get('/places', function (req, res) {
   	"port": null,
   	"path": "/locations/search?query="+cityName+"&limit=30&offset=0&units=km&location_id=1&currency=USD&sort=relevance&lang=en_US",
   	"headers": {
-  		"x-rapidapi-key": process.env.API_KEY_TRAVEL,
+  		"x-rapidapi-key": "60d5520338msh876e8fef602878bp1db719jsn24c1f26bab71",
   		"x-rapidapi-host": "travel-advisor.p.rapidapi.com",
   		"useQueryString": true
   	}
@@ -76,22 +76,6 @@ http.get(options, function(response){
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.get("/", function(req, res) {
     res.render("home");
 });
@@ -100,9 +84,6 @@ app.post("/", function(req, res){
   res.redirect('/places')
 
 });
-
-
-
 
 
 app.listen(3000, function() {
