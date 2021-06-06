@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/style_city.css" />
+    <link rel="shortcut icon" type="image/png" href="imagea.jpg" />
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <title>Travelouge| <%=city.city%></title>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" id = "navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          Travelogue
+        <!-- <img src="/icon_home.png" alt="" width="100" height="35"> -->
+      </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Hotels</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Flights</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/contribute">Contribute</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#" tabindex="-1" aria-disabled="false">login</a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+    </header>
+
+    <section class="section-header">
+      <div class="heading-box">
+        <h1 class="heading-primary">
+          <span><%=city.city%>
+            </span>
+        </h1>
+        <div class="heading-box__group">
+          <div class="heading-box__detail">
+
+            <span class="heading-box__text">10 days</span>
+          </div>
+          <div class="heading-box__detail">
+            <svg class="heading-box__icon">
+              <use xlink:href="img/icons.svg#icon-map-pin"></use>
+            </svg>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-description">
+      <div class="overview-box">
+        <div>
+          <div class="overview-box__group">
+            <h2 class="heading-secondary ma-bt-lg">Quick facts</h2>
+            <div class="overview-box__detail">
+              <svg class="overview-box__icon">
+                <use xlink:href="img/icons.svg#icon-calendar"></use>
+              </svg>
+              <span class="overview-box__label">Thriller</span>
+              <span class="overview-box__text"><%=city.spots.Thriller%></span>
+            </div>
+            <div class="overview-box__detail">
+              <svg class="overview-box__icon">
+                <use xlink:href="img/icons.svg#icon-trending-up"></use>
+              </svg>
+              <span class="overview-box__label">Sipritual</span>
+              <span class="overview-box__text"><%=city.spots.Spiritual%></span>
+            </div>
+
+            <div class="overview-box__detail">
+              <svg class="overview-box__icon">
+                <use xlink:href="img/icons.svg#icon-star"></use>
+              </svg>
+              <span class="overview-box__label">Average Rating</span>
+              <span class="overview-box__text">4.9 / 5</span>
+            </div>
+          </div>
+
+          <div class="overview-box__group">
+            <h2 class="heading-secondary ma-bt-lg"></h2>
+
+            <div class="overview-box__detail">
+              <img
+                src="imagea.jpg"
+                alt="Lead guide Image"
+                class="overview-box__img"
+              />
+              <span class="overview-box__label">Lead guide</span>
+              <span class="overview-box__text">Aman Kumar Yadav</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="description-box">
+        <h2 class="heading-secondary ma-bt-lg">About <%=city.city%></h2>
+        <p class="description__text">
+
+        </p>
+        <p class="description__text">
+            <%=city.description%>
+        </p>
+      </div>
+    </section>
+
+    <section class="section-pictures">
+      <div class="picture-box">
+        <img
+          class="picture-box__img picture-box__img--1"
+          src="img/tour-5-1.jpg"
+          alt="The Park Camper Tour 1"
+        />
+      </div>
+      <div class="picture-box">
+        <img
+          class="picture-box__img picture-box__img--2"
+          src="img/tour-5-2.jpg"
+          alt="The Park Camper Tour 1"
+        />
+      </div>
+      <div class="picture-box">
+        <img
+          class="picture-box__img picture-box__img--3"
+          src="img/tour-5-3.jpg"
+          alt="The Park Camper Tour 1"
+        />
+      </div>
+    </section>
+
+    <section class="section-map">
+      <div id="map"></div>
+      <script>
+        mapboxgl.accessToken =
+          'pk.eyJ1Ijoiam9uYXNzY2htZWR0bWFubiIsImEiOiJjam54ZmM5N3gwNjAzM3dtZDNxYTVlMnd2In0.ytpI7V7w7cyT1Kq5rT9Z1A';
+
+        const geojson = {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [23.2443439, 77.3762574]
+              },
+              properties: {
+                description: 'Zion Canyon National Park'
+              }
+            },
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-111.376161, 36.86438]
+              },
+              properties: {
+                description: 'Antelope Canyon'
+              }
+            },
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-112.115763, 36.058973]
+              },
+              properties: {
+                description: 'Grand Canyon National Park'
+              }
+            },
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-116.107963, 34.011646]
+              },
+              properties: {
+                description: 'Joshua Tree National Park'
+              }
+            }
+          ]
+        };
+
+        const map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/jonasschmedtmann/cjnxfn3zk7bj52rpegdltx58h',
+          scrollZoom: false
+        });
+
+        const bounds = new mapboxgl.LngLatBounds();
+
+        geojson.features.forEach(function(marker) {
+          var el = document.createElement('div');
+          el.className = 'marker';
+
+          new mapboxgl.Marker({
+            element: el,
+            anchor: 'bottom'
+          })
+            .setLngLat(marker.geometry.coordinates)
+            .addTo(map);
+
+          new mapboxgl.Popup({
+            offset: 30,
+            closeOnClick: false
+          })
+            .setLngLat(marker.geometry.coordinates)
+            .setHTML('<p>' + marker.properties.description + '</p>')
+            .addTo(map);
+
+          bounds.extend(marker.geometry.coordinates);
+        });
+
+        map.fitBounds(bounds, {
+          padding: {
+            top: 200,
+            bottom: 150,
+            left: 50,
+            right: 50
+          }
+        });
+
+        map.on('load', function() {
+          map.addLayer({
+            id: 'route',
+            type: 'line',
+            source: {
+              type: 'geojson',
+              data: {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                  type: 'LineString',
+                  coordinates: [
+                    [-112.987418, 37.198125],
+                    [-111.376161, 36.86438],
+                    [-112.115763, 36.058973],
+                    [-116.107963, 34.011646]
+                  ]
+                }
+              }
+            },
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            paint: {
+              'line-color': '#55c57a',
+              'line-opacity': 0.6,
+              'line-width': 3
+            }
+          });
+        });
+      </script>
+    </section>
+
+    <section class="section-reviews">
+      <div class="reviews">
+
+    <%contribute.forEach(function(contra){%>
+        <div class="reviews__card">
+          <div class="reviews__avatar">
+
+            <h6 class="reviews__user"><%=contra.author%></h6>
+          </div>
+          <p class="reviews__text">
+         <%=contra.description%>
+          </p>
+          <div class="reviews__rating">
+            <svg class="reviews__star reviews__star--active">
+              <use xlink:href="img/icons.svg#icon-star"></use>
+            </svg>
+            <svg class="reviews__star reviews__star--active">
+              <use xlink:href="img/icons.svg#icon-star"></use>
+            </svg>
+            <svg class="reviews__star reviews__star--active">
+              <use xlink:href="img/icons.svg#icon-star"></use>
+            </svg>
+            <svg class="reviews__star reviews__star--active">
+              <use xlink:href="img/icons.svg#icon-star"></use>
+            </svg>
+            <svg class="reviews__star reviews__star--inactive">
+              <use xlink:href="img/icons.svg#icon-star"></use>
+            </svg>
+          </div>
+        </div>
+<%});%>
+      </div>
+    </section>
+
+    <section class="section-cta">
+      <div class="cta">
+        <div class="cta__img cta__img--logo">
+          <img src="img/logo-white.png" alt="Natours logo" class="" />
+        </div>
+        <img src="img/tour-5-2.jpg" alt="" class="cta__img cta__img--1" />
+        <img src="img/tour-5-1.jpg" alt="" class="cta__img cta__img--2" />
+
+        <div class="cta__content">
+          <h2 class="heading-secondary">What are you waiting for?</h2>
+          <p class="cta__text">
+            See places and Hotles in the City
+          </p>
+          <form  action="/city" method="post">
+            <button class="btn btn--green span-all-rows" type="submit" value="<%=city.city%>" name="places">See Places</button>
+              <a href='/map', class="btn btn--green span-all-rows">Mark Map</a>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div class="footer__logo">
+        <img src="imagea.jpg" alt="Natours logo" />
+      </div>
+      <ul class="footer__nav">
+        <li><a href="#">About us</a></li>
+
+        <li><a href="/contribute">Become a guide</a></li>
+
+        <li><a href="/">Contact</a></li>
+      </ul>
+      <p class="footer__copyright">
+        &copy; TRAVELOUGE. All rights reserved.
+      </p>
+    </div>
+  </body>
+</html>
