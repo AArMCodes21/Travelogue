@@ -8,7 +8,7 @@ const http = require("https");
 
 
 const app = express();
-var cityName ='';
+var cityName = '';
 var loclat = 0;
 var locLong = 0;
 var locID = 0;
@@ -16,7 +16,7 @@ var placeName = '';
 
 
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 mong.mongoDB_connection();
@@ -24,39 +24,39 @@ City = mong.City;
 Contribution = mong.Contribute;
 
 app.get("/cities", function (req, res) {
-City.find({}, function (err, cities) {
-  if(!err){
-    res.render("cities", {
-      cities: cities
-    });
+  City.find({}, function (err, cities) {
+    if (!err) {
+      res.render("cities", {
+        cities: cities
+      });
     }
-  else {
-    console.log(err);
-  }
-});
+    else {
+      console.log(err);
+    }
+  });
 });
 
 
 app.get('/places', function (req, res) {
   const options = {
-  	"method": "GET",
-  	"hostname": "travel-advisor.p.rapidapi.com",
-  	"port": null,
-  	"path": "/locations/search?query="+placeName+"&limit=30&offset=0&units=km&location_id=1&currency=USD&sort=relevance&lang=en_US",
-  	"headers": {
-  		"x-rapidapi-key": process.env.API_KEY_TRAVEL,
-  		"x-rapidapi-host": "travel-advisor.p.rapidapi.com",
-  		"useQueryString": true
-  	}
+    "method": "GET",
+    "hostname": "travel-advisor.p.rapidapi.com",
+    "port": null,
+    "path": "/locations/search?query=" + placeName + "&limit=30&offset=0&units=km&location_id=1&currency=USD&sort=relevance&lang=en_US",
+    "headers": {
+      "x-rapidapi-key": process.env.API_KEY_TRAVEL,
+      "x-rapidapi-host": "travel-advisor.p.rapidapi.com",
+      "useQueryString": true
+    }
   };
-http.get(options, function(response){
-  const travel = [];
-  response.on("data", function(data){
-    travel.push(data);
-  });
-  response.on("end", function () {
-  		const body = Buffer.concat(travel);
-  		travelData = JSON.parse(body);
+  http.get(options, function (response) {
+    const travel = [];
+    response.on("data", function (data) {
+      travel.push(data);
+    });
+    response.on("end", function () {
+      const body = Buffer.concat(travel);
+      travelData = JSON.parse(body);
       res.render("places", {
         travelData: travelData
       });
@@ -66,80 +66,75 @@ http.get(options, function(response){
       loclat = travelData.data[0].result_object.latitude;
       locLong = travelData.data[0].result_object.longitude;
       locID = travelData.data[0].result_object.location_id;
-  	});
+    });
+
+  });
 
 });
 
+app.get("/", function (req, res) {
+  res.render("home");
 });
 
-app.get("/", function(req, res) {
-    res.render("home");
-});
-
-app.get("/contribute", function(req, res){
+app.get("/contribute", function (req, res) {
   res.render("contribute")
 });
 
 
 
 
-app.get("/hotels", function(req, res) {
+app.get("/hotels", function (req, res) {
   const options = {
-	"method": "GET",
-	"hostname": "travel-advisor.p.rapidapi.com",
-	"port": null,
-	"path": "/hotels/list?location_id="+locID+"&adults=1&rooms=1&nights=2&offset=0&currency=USD&order=asc&limit=30&sort=recommended&lang=en_US",
-	"headers": {
-		"x-rapidapi-key": process.env.API_KEY_TRAVEL,
-		"x-rapidapi-host": "travel-advisor.p.rapidapi.com",
-		"useQueryString": true
-	}
-};
+    "method": "GET",
+    "hostname": "travel-advisor.p.rapidapi.com",
+    "port": null,
+    "path": "/hotels/list?location_id=" + locID + "&adults=1&rooms=1&nights=2&offset=0&currency=USD&order=asc&limit=30&sort=recommended&lang=en_US",
+    "headers": {
+      "x-rapidapi-key": process.env.API_KEY_TRAVEL,
+      "x-rapidapi-host": "travel-advisor.p.rapidapi.com",
+      "useQueryString": true
+    }
+  };
 
-http.get(options, function (response) {
-	const chunks = [];
+  http.get(options, function (response) {
+    const chunks = [];
 
-	response.on("data", function (chunk) {
-		chunks.push(chunk);
-	});
+    response.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
 
-	response.on("end", function () {
-		const body = Buffer.concat(chunks);
-    hotelData = JSON.parse(body);
-   res.render("hotels", {
-     hotelData: hotelData
-   });
+    response.on("end", function () {
+      const body = Buffer.concat(chunks);
+      hotelData = JSON.parse(body);
+      res.render("hotels", {
+        hotelData: hotelData
       });
+    });
+  });
 });
-});
 
-
-
-
-
-
-app.post("/", function(req, res){
-  cityName = req.body.search_in;
+app.post("/", function (req, res) {
+  cityName = _.upperFirst(_.lowerCase(req.body.search_in));
   res.redirect('/city');
 });
 
-app.post("/city", function(req, res){
-    placeName = req.body.places;
-    res.redirect('/places');
+app.post("/city", function (req, res) {
+  placeName = req.body.places;
+  res.redirect('/places');
 });
 
-app.get("/city", function(req, res){
-  City.findOne({city : cityName}, function(err, city){
-    if(!err){
-    Contribution.find({city: cityName}, function(err, contri){
+app.get("/city", function (req, res) {
+  City.findOne({ city: cityName }, function (err, city) {
+    if (!err) {
+      Contribution.find({ city: cityName }, function (err, contri) {
 
-          if(!err){
-            res.render("city", {city: city, contribute: contri});
-          }
-          else {
-            console.log(err);
-          }
-        });
+        if (!err) {
+          res.render("city", { city: city, contribute: contri });
+        }
+        else {
+          console.log(err);
+        }
+      });
     }
     else {
       console.log("err");
@@ -149,33 +144,33 @@ app.get("/city", function(req, res){
 
 });
 
-app.get("/map", function(req, res){
+app.get("/map", function (req, res) {
   res.render("map");
 });
 
 
 
-app.post("/contribute", function(req, res){
- const contribution = new Contribution({
-   city: req.body.inputCity,
-   state: req.body.inputState,
-   author: req.body.inputName,
-   description: req.body.inputDescription,
- });
- contribution.save(function(err) {
-   if(!err){
-     res.redirect("/contribute")
-   }
-   else{
-     console.log(err);
-   }
- });
+app.post("/contribute", function (req, res) {
+  const contribution = new Contribution({
+    city: _.upperFirst(_.lowerCase(req.body.inputCity)),
+    state: req.body.inputState,
+    author: req.body.inputName,
+    description: req.body.inputDescription,
+  });
+  contribution.save(function (err) {
+    if (!err) {
+      res.redirect("/contribute")
+    }
+    else {
+      console.log(err);
+    }
+  });
 });
 
 
 
 
 
-app.listen(3000, function() {
+app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
