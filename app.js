@@ -114,7 +114,7 @@ app.get("/hotels", function (req, res) {
 });
 
 app.post("/", function (req, res) {
-  cityName = _.upperFirst(_.lowerCase(req.body.search_in));
+  cityName = _.upperFirst(_.lowerCase(_.toLower(req.body.search_in)));
   res.redirect('/city');
 });
 
@@ -152,7 +152,7 @@ app.get("/map", function (req, res) {
 
 app.post("/contribute", function (req, res) {
   const contribution = new Contribution({
-    city: _.upperFirst(_.lowerCase(req.body.inputCity)),
+    city: _.upperFirst(_.lowerCase(_.toLower(req.body.inputCity))),
     state: req.body.inputState,
     author: req.body.inputName,
     description: req.body.inputDescription,
