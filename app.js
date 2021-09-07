@@ -44,7 +44,7 @@ app.get('/places', function (req, res) {
     "port": null,
     "path": "/locations/search?query=" + placeName + "&limit=30&offset=0&units=km&location_id=1&currency=USD&sort=relevance&lang=en_US",
     "headers": {
-      "x-rapidapi-key": process.env.API_KEY_TRAVEL,
+      "x-rapidapi-key": "60d5520338msh876e8fef602878bp1db719jsn24c1f26bab71",
       "x-rapidapi-host": "travel-advisor.p.rapidapi.com",
       "useQueryString": true
     }
@@ -90,7 +90,7 @@ app.get("/hotels", function (req, res) {
     "port": null,
     "path": "/hotels/list?location_id=" + locID + "&adults=1&rooms=1&nights=2&offset=0&currency=USD&order=asc&limit=30&sort=recommended&lang=en_US",
     "headers": {
-      "x-rapidapi-key": process.env.API_KEY_TRAVEL,
+      "x-rapidapi-key": "60d5520338msh876e8fef602878bp1db719jsn24c1f26bab71",
       "x-rapidapi-host": "travel-advisor.p.rapidapi.com",
       "useQueryString": true
     }
