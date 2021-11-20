@@ -1,5 +1,5 @@
-const express = require('express');
 const mongoose = require('mongoose');
+
 
  function mongoDB_connection() {
 mong_config = mongoose.connect("mongodb+srv://aarm_user:travelogue@mongoDB@cluster0.uo37s.mongodb.net/Travelogue?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true });
@@ -28,7 +28,16 @@ const aboutCity = new mongoose.Schema({
   });
 const Contribute = mongoose.model("Contribute", aboutCity);
 
+const userSchema = new mongoose.Schema({
+  name: String,
+  password: String,
+  email: String
+});
+
+const User = mongoose.model("User", userSchema);
+
+
 
 module.exports = {
-  mongoDB_connection, City, Contribute,
+  mongoDB_connection, City, Contribute, User
 }

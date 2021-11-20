@@ -22,6 +22,7 @@ app.use(express.static("public"));
 mong.mongoDB_connection();
 City = mong.City;
 Contribution = mong.Contribute;
+User = mong.User;
 
 app.get("/cities", function (req, res) {
   City.find({}, function (err, cities) {
@@ -44,7 +45,7 @@ app.get('/places', function (req, res) {
     "port": null,
     "path": "/locations/search?query=" + placeName + "&limit=30&offset=0&units=km&location_id=1&currency=USD&sort=relevance&lang=en_US",
     "headers": {
-      "x-rapidapi-key": "60d5520338msh876e8fef602878bp1db719jsn24c1f26bab71",
+      "x-rapidapi-key": process.env.API_KEY_TRAVEL,
       "x-rapidapi-host": "travel-advisor.p.rapidapi.com",
       "useQueryString": true
     }
@@ -90,7 +91,7 @@ app.get("/hotels", function (req, res) {
     "port": null,
     "path": "/hotels/list?location_id=" + locID + "&adults=1&rooms=1&nights=2&offset=0&currency=USD&order=asc&limit=30&sort=recommended&lang=en_US",
     "headers": {
-      "x-rapidapi-key": "60d5520338msh876e8fef602878bp1db719jsn24c1f26bab71",
+      "x-rapidapi-key": process.env.API_KEY_TRAVEL,
       "x-rapidapi-host": "travel-advisor.p.rapidapi.com",
       "useQueryString": true
     }
@@ -167,6 +168,53 @@ app.post("/contribute", function (req, res) {
   });
 });
 
+app.get("/register", function (req, res) {
+res.render("register");
+});
+app.get("/login", function (req, res) {
+res.render("login");
+});
+app.post("/login", function (req, res) {
+const username = req.body.username;
+const password = req.body.password;
+
+User.findOne({ email: username}, function (err, foundUser) {
+  if(err){
+    console.log(err);
+  }
+  else{
+    if(foundUser){
+      if(foundUser.password === password){
+        res.redirect("/contribute");
+      }
+      else{
+        res.redirect("/login");
+        console.log("wrong password");
+      }
+    }
+  }
+});
+});
+
+
+
+
+app.post("/register", function (req, res) {
+  const newUser = new User({
+    
+      name: req.body.name,
+      email: req.body.username,
+      password: req.body.password,
+  });
+  newUser.save(function (err) {
+    if (!err) {
+      res.redirect("/login");
+    }
+    else {
+      console.log(err);
+    }
+  });
+});
 
 
 
