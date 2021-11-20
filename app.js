@@ -22,6 +22,7 @@ app.use(express.static("public"));
 mong.mongoDB_connection();
 City = mong.City;
 Contribution = mong.Contribute;
+User = mong.User;
 
 app.get("/cities", function (req, res) {
   City.find({}, function (err, cities) {
@@ -167,6 +168,53 @@ app.post("/contribute", function (req, res) {
   });
 });
 
+app.get("/register", function (req, res) {
+res.render("register");
+});
+app.get("/login", function (req, res) {
+res.render("login");
+});
+app.post("/login", function (req, res) {
+const username = req.body.username;
+const password = req.body.password;
+
+User.findOne({ email: username}, function (err, foundUser) {
+  if(err){
+    console.log(err);
+  }
+  else{
+    if(foundUser){
+      if(foundUser.password === password){
+        res.redirect("/contribute");
+      }
+      else{
+        res.redirect("/login");
+        console.log("wrong password");
+      }
+    }
+  }
+});
+});
+
+
+
+
+app.post("/register", function (req, res) {
+  const newUser = new User({
+    
+      name: req.body.name,
+      email: req.body.username,
+      password: req.body.password,
+  });
+  newUser.save(function (err) {
+    if (!err) {
+      res.redirect("/login");
+    }
+    else {
+      console.log(err);
+    }
+  });
+});
 
 
 
