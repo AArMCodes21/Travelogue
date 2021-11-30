@@ -1323,3 +1323,16 @@ body {
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
 }
+
+.actionBtn {
+  max-width: 50em;
+  position: relative;
+  margin: 0 auto;
+  max-height: 2rem;
+  overflow: hidden;
+  background-color: #fff;
+  padding: 9rem 5rem 9rem 21rem;
+  border-radius: 2rem;
+  -webkit-box-shadow: 0 3rem 8rem 0.5rem rgba(0, 0, 0, 0.15);
+  box-shadow: 0 3rem 8rem 0.5rem rgba(0, 0, 0, 0.15);
+}
